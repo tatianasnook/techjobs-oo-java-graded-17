@@ -26,8 +26,7 @@ public class JobTest {
 
         assertEquals("Product tester", testerJob.getName());
         assertEquals("ACME", testerJob.getEmployer().getValue());
-//        System.out.println(testerJob.getEmployer());
-//        System.out.println(testerJob.getEmployer().getValue());
+//
         assertEquals("Desert", testerJob.getLocation().getValue());
         assertEquals("Quality control", testerJob.getPositionType().getValue());
         assertEquals("Persistence", testerJob.getCoreCompetency().getValue());
@@ -41,4 +40,43 @@ public class JobTest {
         assertFalse(job1.equals(job2));
     }
 
+    @Test
+    public void testToStringStartsAndEndsWithNewLine() {
+        Job testerJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
+                new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String jobString = testerJob.toString();
+//
+        assertTrue(jobString.startsWith(System.lineSeparator()));
+        assertTrue(jobString.endsWith(System.lineSeparator()));
+    }
+
+    @Test
+    public void testToStringContainsCorrectLabelsAndData() {
+        Job testerJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
+                new PositionType("Quality control"), new CoreCompetency("Persistence"));
+        String jobString = testerJob.toString();
+
+        assertTrue(jobString.contains("ID: "));
+        assertTrue(jobString.contains("Name: "));
+        assertTrue(jobString.contains("Employer: "));
+        assertTrue(jobString.contains("Location: "));
+        assertTrue(jobString.contains("Position Type: "));
+        assertTrue(jobString.contains("Core Competency: "));
+
+        assertTrue(jobString.contains("Product tester"));
+        assertTrue(jobString.contains("ACME"));
+        assertTrue(jobString.contains("Desert"));
+        assertTrue(jobString.contains("Quality control"));
+        assertTrue(jobString.contains("Persistence"));
+
+    }
+
+    @Test
+    public void testToStringHandlesEmptyField() {
+        Job testerJob = new Job("Product tester", new Employer("ACME"), new Location("Desert"),
+                new PositionType("Quality control"), new CoreCompetency(""));
+        String jobString = testerJob.toString();
+
+        assertEquals("Data not available", testerJob.getCoreCompetency().getValue());
+    }
 }
